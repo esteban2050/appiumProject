@@ -1,0 +1,91 @@
+Por ahora esta el nuevo cliente de java que es java client 8 y 9. Anteriormente se trabajaba con java client 7.
+Desde java client 8 se incluye selenium 4 desde cliente 9 solo se da soporte para la version 11 en adelante del lenguaje de java.
+Al java cliente soportar selenium 4 y posterior, significa que obedece estrictamente a W3C que es una organizacion que desarrolla estandares para garantizar que sea consistente y compatible con una gran variedad de navegadores y plataformas, lo que facilita escribir scripts que funcionana en diferentes entornos.
+
+Ya no se debe usar *desiredCapabilities * class para este poposito en en el contexto de W3C.
+
+
+Antes se usaba el protocolo de JWP, pero ahora es W3C que funciona asi: 
+-El cliente hace una solicitud al servidor mediante una solicitud HTTP, que viaja en formato JSON o XML, y luego el servidor responde con una respuesta HTTP.
+Hay un mediador entre la comunicacion de las librerias del cliente (java, ruby, python...etc) y los drivers del navegador, ya que el navegador solo entiende protocolos 
+################ CAMBIOS ##############
+1. default path anteriormente, se le debia agregar /wd/hub al final de la URL base. Ahora se ha removido, y solo se debe poner un /.
+Old default path: /wd/hub
+Now new path: /
+
+2. finBy* removidos, ahora se usa findElement[s](By or AppiumBy)
+
+3. Drivers: 
+IOS: XCUITest driver options
+Android: UIAutomator2 driver options or Espresso driver options 
+
+4. Para los tiempos usar la libreria
+java.time.Duration class.
+
+5. Con appium 1.0 tocaba siempre crear el DesireCapabilities, ahora cambio y se crea para android las opciones de tipo UiAutomator2Options o XCUITestOptions para IOS
+
+################ CAMBIOS ##############
+
+################ INSTALLATION #########
+1. Installar Java y Sdk y jdk. e Installar Maven
+ 1.1 Configurar variables de entorno:
+JAVA_HOME  y poner ruta hasta la carpeta del ..java\jdk-x.x.x(version)
+MAVEN_HOME  y poner hasta la ruta de la carpeta ..apache-maven-x.x.x(version)
+
+Recomendacion: Si se va hacer algo con CI/CD se recomienda instalar java 17 por que con la version 18 salen algunos problemas
+
+2. Instalar Node/NPM
+
+3. Instalar appium con el comando: npm i -g appium-installer
+Ejecutar en consola, para......
+installar algo adicional: appium-installer
+ejecutar el servidor de appium: appium 
+
+Luego configurar el ambiente, ejecutar appium-installer y seleccionar la primera de android environment luego, y escoger la opcion de android y luego la de chrome para el browser
+
+4.Instalar appium server : con la opcion appium-installer y luego escoger instalar appium server 
+
+5. Instalar el driver UIAutomator2 escribiendo en la consola:
+appium driver install uiautomato2 o
+appium server e instalar drivers y seleccionar la opcion de uiautomato2  e instalar
+
+6.Instalar appium inspector
+
+7.Instalar android studio 
+7.1. Crear las variables de entorno con 3 rutas dentro de la variable path. Estas carpetas estan en la carpeta sdk que queda dentro de la instalacion de android studio: 1. build-tools, platform-tools y tools
+
+Nota: Para instalar una dependencia adicional en el android studio que esta relacionada con el adb faltante que sale cuando se ejecuta appium doctor desde las ayudas que da el appium-installer, se debe abrir android studio-> setting -> Android SDK -> apartado "sdk tools" -> chulear opcion "Android SDK Command-Line tools"
+
+################ INSTALLATION #########
+
+
+################ LOCATORS #############
+
+driver.findElement(AppiumBy.examples )
+
+examples:
+Se puede usar el metodo accessibilityId, si el elemento en la aplicacion es "accessibility id" o "contetn-desc"
+1. accessibilityId("abs")
+Cuando se tiene resource-id:
+2. id("abs")
+xpath
+3. xpath("// abs")
+
+################ LOCATORS #############
+
+
+
+############OBSERVACIONES#############
+1. Para usar seleneid appium, sale un error al importar la libreria de java-client, es decir, que no se debe usar el cliente de java para appium si se desea usar selenide appium.
+2. Ultima version de seleneide appium (7.0.0) saca error. Toco trabajar con la penultima: 6.19.0
+3. Cuando se usa seleneide, por defecto hace el driver quit. Por lo tanto, no es necesario escribirlo manualmente.
+4. En las *Capabilities* cuando se coloca el "setDeviceName" , si se tiene un solo dispositivo, se puede poner un nombre random, de lo contrario se debe poner el nombre del dispositivo
+5. Con seleneide, para los waits, metodos shouldHave y shoudlBe hacen lo mismo pero por sintaxis, es preferible usar shouldBe para waitings y should have para assertions
+6. Con appium cuando se usa el page factory, no es necesario crear el constructor y hacer el metodo initElements que se hace normalmente en WEB. En appium se va directamente a la clase test y se llama el metodo: ScreenObject.screen(screenClass.class) Y con esta linea se hace la inicializacion de elementos
+7. Con seleneide appium : 
+
+-tap: $(element).shouldBe(visible).click(AppiumClickOptions.tap())
+-doubleTap:  $(element).shouldBe(visible).click(AppiumClickOptions.doubleTap())
+-longPress:  $(element).shouldBe(visible).click(AppiumClickOptions.longPress())
+-tap specific place:  $(element).shouldBe(visible).click(AppiumClickOptions.tapWithOffset(xvalue,yvalue))
+-DragAndDrop:  $(element).shouldBe(visible).dragAndDrop(DragAndDropOptions.to(secondElement))
